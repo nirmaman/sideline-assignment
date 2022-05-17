@@ -17,14 +17,14 @@ const getCurrencies = async () => {
       const { baseCurrency, exchangedCurrency, threshold } = WatchedCurrency
       const fullURL = `${currencyExchangeURL}${currencyExchangeAPIKey}&from=${baseCurrency}&to=${exchangedCurrency}&amount=1`
       const ExchangeCurrencies = await axios.get(fullURL).catch((error) => logger.error(error))
-      // if (!ExchangeCurrencies || !ExchangeCurrencies.data || !ExchangeCurrencies.data.amount) {
-      //   logger.warn(`didn't find Exchange Currency ${baseCurrency} to ${exchangedCurrency}`)
-      //   continue
-      // }
-      let exchangeAmount = ExchangeCurrencies.data.amount
-      if (exchangeAmount === 0) {
-        exchangeAmount = 3
+      if (!ExchangeCurrencies || !ExchangeCurrencies.data || !ExchangeCurrencies.data.amount) {
+        logger.warn(`didn't find Exchange Currency ${baseCurrency} to ${exchangedCurrency}`)
+        continue
       }
+      let exchangeAmount = ExchangeCurrencies.data.amount
+      // if (exchangeAmount === 0) {
+      //   exchangeAmount = 3
+      // }
       if (exchangeAmount > Number(threshold)) {
         const alertData = { timestamp: new Date(), baseCurrency, exchangedCurrency, ValueToDate: exchangeAmount }
         const resAlert = await dbHelper.update(query.createAlert(alertData), alertData)
