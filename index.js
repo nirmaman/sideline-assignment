@@ -17,12 +17,14 @@ server.use('/watched', watchedRoutes)
 
 const currency = require('./module/currency')
 
+//the function starts when the program start.
+//there is option to make a Interval but there is a limit api call (not FREE) so it stay as a comment.
+
 // setInterval(() => {
-//currency.getCurrencies()
+currency.getCurrencies()
 // }, 3000)
 
 const port = process.env.HTTP_PORT || 3001
 server.listen(port, () => {
   logger.info(`HTTP Server is running on: ${port}`)
 })
-
